@@ -1,0 +1,4 @@
+.MovieCardContainer {
+  display: flex;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,58 @@
+.ProfileMovieListItem {
+  cursor: pointer;
+}
+
+.ProfileMovieListItem .profile-movie-info-container {
+  display: flex;
+  height: 6.5rem;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.ProfileMovieListItem .profile-movie-poster {
+  height: 3rem;
+  border-radius: 3px;
+  margin-right: 1rem;
+}
+
+.ProfileMovieListItem .profile-movie-details {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ProfileMovieListItem .profile-movie-title {
+  font-size: 0.8rem;
+}
+
+.ProfileMovieListItem .profile-movie-genre-list {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.7rem;
+}
+
+.ProfileMovieListItem .profile-movie-genre-list li:not(:last-child) {
+  margin-right: 0.2rem;
+}
+
+.ProfileMovieListItem .profile-movie-date {
+  margin-top: auto;
+  font-size: 0.7rem;
+}
+
+.ProfileMovieListItem .profile-movie-rating-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  height: 1.7rem;
+  width: 1.7rem;
+  border: 1px solid lightgray;
+  border-radius: 50%;
+}
+
+.ProfileMovieListItem .profile-movie-rating {
+  font-size: 0.7rem;
+}
