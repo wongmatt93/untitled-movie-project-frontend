@@ -1,30 +1,41 @@
-import { IonContent, IonPage, IonSearchbar } from "@ionic/react";
+import {
+  IonContent,
+  IonLabel,
+  IonPage,
+  IonSegment,
+  IonSegmentButton,
+} from "@ionic/react";
 import { useState } from "react";
 import Header from "../components/Header/Header";
-import "./Search.css";
-import { getTmdbMoviesByQuery } from "../services/tmdbService";
 import SearchMovieList from "../components/Lists/SearchMovieList/SearchMovieList";
+import SearchUserList from "../components/Lists/SearchUserList/SearchUserList";
+import "./Search.css";
 
 const Search = () => {
-  const [query, setQuery] = useState<string | null | undefined>(null);
-  const [movieIds, setMovieIds] = useState<number[]>([]);
-
-  const handleSendQuery = async () =>
-    query &&
-    setMovieIds(
-      (await getTmdbMoviesByQuery(query)).results.map((movie) => movie.id)
-    );
+  const [displaySearch, setDisplaySearch] = useState<string>("movies");
 
   return (
     <IonPage className="Search" id="main-content">
       <Header title="Search" />
       <IonContent fullscreen>
-        <IonSearchbar
-          autocapitalize="off"
-          onIonInput={(e) => setQuery(e.target.value)}
-          onIonChange={handleSendQuery}
-        />
-        <SearchMovieList movieIds={movieIds} />
+        <IonSegment color="dark" value={displaySearch}>
+          <IonSegmentButton
+            value="movies"
+            onClick={() => setDisplaySearch("movies")}
+          >
+            <IonLabel>Movies</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton
+            value="users"
+            onClick={() => setDisplaySearch("users")}
+          >
+            <IonLabel>Users</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
+
+        {displaySearch === "movies" && <SearchMovieList />}
+
+        {displaySearch === "users" && <SearchUserList />}
       </IonContent>
     </IonPage>
   );

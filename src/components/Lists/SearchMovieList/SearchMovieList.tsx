@@ -1,18 +1,54 @@
-import { IonList } from "@ionic/react";
+import { IonList, IonSearchbar } from "@ionic/react";
+import { useState } from "react";
+import Movie from "../../../models/Movie";
+import { getTmdbMoviesByQuery } from "../../../services/tmdbService";
+import MovieModal from "../../MovieModal/MovieModal";
 import "./SearchMovieList.css";
 import SearchMovieListItem from "./SearchMovieListItem";
 
-interface Props {
-  movieIds: number[];
-}
+const SearchMovieList = () => {
+  const [query, setQuery] = useState<string | null | undefined>(null);
+  const [movieIds, setMovieIds] = useState<number[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-const SearchMovieList = ({ movieIds }: Props) => {
+  const handleModalClick = (movie: Movie) => {
+    setIsOpen(true);
+    setSelectedMovie(movie);
+  };
+
+  const handleSendQuery = async () =>
+    query &&
+    setMovieIds(
+      (await getTmdbMoviesByQuery(query)).results.map((movie) => movie.id)
+    );
+
   return (
-    <IonList className="SearchMovieList">
-      {movieIds.map((movieId) => (
-        <SearchMovieListItem key={movieId} movieId={movieId} />
-      ))}
-    </IonList>
+    <div className="SearchMovieList">
+      <IonSearchbar
+        autocapitalize="off"
+        onIonInput={(e) => setQuery(e.target.value)}
+        onIonChange={handleSendQuery}
+      />
+
+      <IonList>
+        {movieIds.map((movieId) => (
+          <SearchMovieListItem
+            key={movieId}
+            movieId={movieId}
+            handleClick={handleModalClick}
+          />
+        ))}
+
+        {selectedMovie && (
+          <MovieModal
+            movie={selectedMovie}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
+        )}
+      </IonList>
+    </div>
   );
 };
 

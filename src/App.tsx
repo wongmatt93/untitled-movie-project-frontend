@@ -11,7 +11,7 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { ellipse, square, triangle } from "ionicons/icons";
+import { home, listOutline, mail, search } from "ionicons/icons";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
@@ -38,6 +38,7 @@ import "./theme/variables.css";
 import AuthContext from "./context/AuthContext";
 import Menu from "./components/SettingsMenu/SettingsMenu";
 import Login from "./pages/Login";
+import Notifications from "./pages/Notifications";
 
 setupIonicReact();
 
@@ -59,7 +60,10 @@ const App = () => {
             <Route exact path="/search">
               <Search />
             </Route>
-            <Route path="/profile">
+            <Route path="/notifications">
+              {userProfile ? <Notifications /> : <Login />}
+            </Route>
+            <Route path="/lists">
               {userProfile ? <Profile thisProfile={userProfile} /> : <Login />}
             </Route>
             <Route exact path="/">
@@ -68,16 +72,20 @@ const App = () => {
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/home">
-              <IonIcon aria-hidden="true" icon={triangle} />
+              <IonIcon aria-hidden="true" icon={home} />
               <IonLabel>Home</IonLabel>
             </IonTabButton>
             <IonTabButton tab="search" href="/search">
-              <IonIcon aria-hidden="true" icon={ellipse} />
+              <IonIcon aria-hidden="true" icon={search} />
               <IonLabel>Search</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="profile" href="/profile">
-              <IonIcon aria-hidden="true" icon={square} />
-              <IonLabel>Profile</IonLabel>
+            <IonTabButton tab="lists" href="/lists">
+              <IonIcon aria-hidden="true" icon={listOutline} />
+              <IonLabel>My Lists</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="notifications" href="/notifications">
+              <IonIcon aria-hidden="true" icon={mail} />
+              <IonLabel>Notifications</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
