@@ -10,6 +10,8 @@ interface Props {
 }
 
 const MovieModal = ({ movie, isOpen, setIsOpen }: Props) => {
+  console.log("Wow I can't believe there's so many of these");
+
   return (
     <IonModal className="MovieModal" isOpen={isOpen}>
       <MovieDetailsHeading movie={movie} setIsOpen={setIsOpen} />

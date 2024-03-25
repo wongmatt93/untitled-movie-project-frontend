@@ -11,6 +11,7 @@ import ProfileMovieList from "../components/Lists/ProfileMovieList/ProfileMovieL
 import UserProfile from "../models/UserProfile";
 import AuthContext from "../context/AuthContext";
 import "./Profile.css";
+import ProfileHeader from "../components/Header/ProfileHeader";
 
 interface Props {
   thisProfile: UserProfile;
@@ -19,12 +20,18 @@ interface Props {
 const Profile = ({ thisProfile }: Props) => {
   const { userProfile } = useContext(AuthContext);
   const [displayList, setDisplayList] = useState<string>("watched");
+  const isUsersProfile: boolean = thisProfile.uid === userProfile?.uid;
 
   return (
     <IonPage className="Profile" id="main-content">
-      <Header title="Profile" />
+      {isUsersProfile && <Header title="My Lists" />}
+
+      {!isUsersProfile && (
+        <ProfileHeader title={`${thisProfile.username}'s Lists`} />
+      )}
+
       <IonContent fullscreen>
-        <IonSegment value={displayList}>
+        <IonSegment color="dark" value={displayList}>
           <IonSegmentButton
             value="watched"
             onClick={() => setDisplayList("watched")}
@@ -45,10 +52,14 @@ const Profile = ({ thisProfile }: Props) => {
         {displayList === "watched" && (
           <ProfileMovieList movies={thisProfile.watchedMovies} />
         )}
+
         {displayList === "watchlist" && (
           <ProfileMovieList movies={thisProfile.watchlistMovies} />
         )}
-        {displayList === "recs" && <ProfileMovieList movies={[]} />}
+
+        {displayList === "recs" && isUsersProfile && (
+          <ProfileMovieList movies={[]} />
+        )}
       </IonContent>
     </IonPage>
   );

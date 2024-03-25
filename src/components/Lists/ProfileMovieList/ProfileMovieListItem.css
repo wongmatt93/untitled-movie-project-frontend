@@ -1,11 +1,14 @@
 .ProfileMovieListItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  width: 100%;
   cursor: pointer;
 }
 
 .ProfileMovieListItem .profile-movie-info-container {
   display: flex;
   height: 6.5rem;
-  padding: 1rem 0;
   width: 100%;
 }
 
@@ -44,7 +47,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
   top: 1rem;
   right: 1rem;
   height: 1.7rem;

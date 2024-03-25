@@ -3,7 +3,7 @@ import { auth } from "../firebaseConfig";
 import UserProfile from "../models/UserProfile";
 import {
   addNewUserProfile,
-  getUserProfile,
+  getUserProfileByUid,
 } from "../services/userProfileService";
 import AuthContext from "./AuthContext";
 
@@ -14,7 +14,7 @@ function AuthContextProvider({ children }: { children: ReactNode }) {
     // useEffect to only register once at start
     return auth.onAuthStateChanged((user) => {
       if (user) {
-        getUserProfile("uid", user.uid).then((userProfile) => {
+        getUserProfileByUid(user.uid).then((userProfile) => {
           if (userProfile) {
             setUserProfile(userProfile);
           } else {

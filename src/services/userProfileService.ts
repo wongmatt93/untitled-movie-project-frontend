@@ -3,13 +3,17 @@ import UserProfile from "../models/UserProfile";
 
 const baseURL: string | undefined = import.meta.env.VITE_API_URL;
 
-export const getUserProfile = async (
-  type: string,
-  identifier: string
-): Promise<UserProfile> =>
+export const getUserProfileByUid = async (uid: string): Promise<UserProfile> =>
+  (await axios.get(`${baseURL}/userProfiles/search-profile-by-uid/${uid}`))
+    .data;
+
+export const getUserProfilesByQuery = async (
+  query: string,
+  username: string
+): Promise<UserProfile[]> =>
   (
     await axios.get(
-      `${baseURL}/userProfiles/search-profile/${type}/${identifier}`
+      `${baseURL}/userProfiles/search-profiles-by-query/${query}/${username}`
     )
   ).data;
 

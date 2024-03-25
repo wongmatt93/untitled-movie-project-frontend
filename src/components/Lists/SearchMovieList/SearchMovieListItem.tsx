@@ -3,16 +3,15 @@ import { useState, useEffect } from "react";
 import Movie from "../../../models/Movie";
 import "./SearchMovieListItem.css";
 import { getMovieById } from "../../../services/movieService";
-import MovieModal from "../../MovieModal/MovieModal";
 
 interface Props {
   movieId: number;
+  handleClick: (movie: Movie) => void;
 }
 
-const SearchMovieListItem = ({ movieId }: Props) => {
+const SearchMovieListItem = ({ movieId, handleClick }: Props) => {
   // hooks
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getMovieById(movieId).then((movie) => setMovie(movie));
@@ -24,7 +23,7 @@ const SearchMovieListItem = ({ movieId }: Props) => {
         <>
           <div
             className="search-result-info-container"
-            onClick={() => setIsOpen(true)}
+            onClick={() => handleClick(movie)}
           >
             <img
               className="search-result-poster"
@@ -36,7 +35,6 @@ const SearchMovieListItem = ({ movieId }: Props) => {
               <p className="search-result-date">{movie.release_date}</p>
             </div>
           </div>
-          <MovieModal movie={movie} isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
       )}
     </IonItem>
