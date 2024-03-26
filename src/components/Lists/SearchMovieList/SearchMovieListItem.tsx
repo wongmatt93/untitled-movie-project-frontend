@@ -1,22 +1,13 @@
 import { IonItem } from "@ionic/react";
-import { useState, useEffect } from "react";
 import Movie from "../../../models/Movie";
 import "./SearchMovieListItem.css";
-import { getMovieById } from "../../../services/movieService";
 
 interface Props {
-  movieId: number;
+  movie: Movie;
   handleClick: (movie: Movie) => void;
 }
 
-const SearchMovieListItem = ({ movieId, handleClick }: Props) => {
-  // hooks
-  const [movie, setMovie] = useState<Movie | null>(null);
-
-  useEffect(() => {
-    getMovieById(movieId).then((movie) => setMovie(movie));
-  }, [movieId]);
-
+const SearchMovieListItem = ({ movie, handleClick }: Props) => {
   return (
     <IonItem className="SearchMovieListItem">
       {movie && (

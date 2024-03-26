@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, lazy } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -36,7 +36,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 import AuthContext from "./context/AuthContext";
-import Menu from "./components/SettingsMenu/SettingsMenu";
+import SettingsMenu from "./components/SettingsMenu/SettingsMenu";
 import Login from "./pages/Login";
 import Notifications from "./pages/Notifications";
 
@@ -47,7 +47,7 @@ const App = () => {
 
   return (
     <IonApp>
-      <Menu />
+      <SettingsMenu />
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet
