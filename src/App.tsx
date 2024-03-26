@@ -1,4 +1,4 @@
-import { useContext, lazy } from "react";
+import { useContext } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -39,11 +39,17 @@ import AuthContext from "./context/AuthContext";
 import SettingsMenu from "./components/SettingsMenu/SettingsMenu";
 import Login from "./pages/Login";
 import Notifications from "./pages/Notifications";
+import MovieModalContext from "./context/MovieModalContext";
+import MovieModal from "./components/Modals/MovieModal/MovieModal";
+import UserModalContext from "./context/UserModalContext";
+import UserModal from "./components/Modals/UserModal/UserModal";
 
 setupIonicReact();
 
 const App = () => {
   const { userProfile } = useContext(AuthContext);
+  const { selectedUser } = useContext(UserModalContext);
+  const { selectedMovie } = useContext(MovieModalContext);
 
   return (
     <IonApp>
@@ -90,6 +96,9 @@ const App = () => {
           </IonTabBar>
         </IonTabs>
       </IonReactRouter>
+
+      {selectedUser && <UserModal userProfile={selectedUser} />}
+      {selectedMovie && <MovieModal movie={selectedMovie} />}
     </IonApp>
   );
 };
