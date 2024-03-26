@@ -1,18 +1,26 @@
 import { IonItem } from "@ionic/react";
 import { SavedMovie } from "../../../models/UserProfile";
 import "./ProfileMovieListItem.css";
+import { useContext } from "react";
+import MovieModalContext from "../../../context/MovieModalContext";
 
 interface Props {
   movie: SavedMovie;
-  handleClick: (movie: SavedMovie) => void;
 }
 
-const ProfileMovieListItem = ({ movie, handleClick }: Props) => {
+const ProfileMovieListItem = ({ movie }: Props) => {
+  // hooks
+  const { openMovieModal } = useContext(MovieModalContext);
+
+  // variables
   const { title, genres, poster_path } = movie.movie;
 
   return (
     <IonItem lines="full">
-      <div className="ProfileMovieListItem" onClick={() => handleClick(movie)}>
+      <div
+        className="ProfileMovieListItem"
+        onClick={() => openMovieModal(movie.movie)}
+      >
         <div className="profile-movie-info-container">
           <img
             className="profile-movie-poster"

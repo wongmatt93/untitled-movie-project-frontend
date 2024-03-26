@@ -14,20 +14,20 @@ import {
   removeWatchlistMovie,
 } from "../../utils/userProfileFunctions";
 import "./AddRemoveMovieButton.css";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthContext";
 
 interface Props {
   type: string;
   userProfile: UserProfile;
-  setUserProfile: React.Dispatch<React.SetStateAction<UserProfile | null>>;
   movieId: number;
 }
 
-const AddRemoveMovieButton = ({
-  type,
-  userProfile,
-  setUserProfile,
-  movieId,
-}: Props) => {
+const AddRemoveMovieButton = ({ type, userProfile, movieId }: Props) => {
+  // hooks
+  const { setUserProfile } = useContext(AuthContext);
+
+  // variables
   const { uid, watchedMovies, watchlistMovies } = userProfile;
 
   const inWatched: boolean = watchedMovies.some(

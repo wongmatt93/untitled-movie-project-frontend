@@ -1,21 +1,24 @@
 import UserProfile from "../../../models/UserProfile";
 import "./SearchUserListItem.css";
-import { IonItem, IonNavLink } from "@ionic/react";
-import Profile from "../../../pages/Profile";
+import { IonItem } from "@ionic/react";
+import { useContext } from "react";
+import UserModalContext from "../../../context/UserModalContext";
 
 interface Props {
   userProfile: UserProfile;
 }
 
 const SearchUserListItem = ({ userProfile }: Props) => {
+  const { openUserModal } = useContext(UserModalContext);
+
   return (
-    <IonItem className="SearchUserListItem">
-      <IonNavLink
-        routerDirection="forward"
-        component={() => <Profile thisProfile={userProfile} />}
+    <IonItem>
+      <div
+        className="SearchUserListItem"
+        onClick={() => openUserModal(userProfile)}
       >
         <h3>{userProfile.username}</h3>
-      </IonNavLink>
+      </div>
     </IonItem>
   );
 };
