@@ -1,14 +1,14 @@
 import { IonList, IonSearchbar } from "@ionic/react";
 import { useState } from "react";
 import Movie from "../../../models/Movie";
-import { getTmdbMoviesByQuery } from "../../../services/tmdbService";
 import MovieModal from "../../MovieModal/MovieModal";
 import "./SearchMovieList.css";
 import SearchMovieListItem from "./SearchMovieListItem";
+import { getMoviesbyQuery } from "../../../services/movieService";
 
 const SearchMovieList = () => {
   const [query, setQuery] = useState<string | null | undefined>(null);
-  const [movieIds, setMovieIds] = useState<number[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
@@ -18,10 +18,7 @@ const SearchMovieList = () => {
   };
 
   const handleSendQuery = async () =>
-    query &&
-    setMovieIds(
-      (await getTmdbMoviesByQuery(query)).results.map((movie) => movie.id)
-    );
+    query && setMovies(await getMoviesbyQuery(query));
 
   return (
     <div className="SearchMovieList">
@@ -32,10 +29,10 @@ const SearchMovieList = () => {
       />
 
       <IonList>
-        {movieIds.map((movieId) => (
+        {movies.map((movie) => (
           <SearchMovieListItem
-            key={movieId}
-            movieId={movieId}
+            key={movie.id}
+            movie={movie}
             handleClick={handleModalClick}
           />
         ))}

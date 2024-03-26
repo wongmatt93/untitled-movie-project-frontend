@@ -1,9 +1,9 @@
 import "./MovieCardContainer.css";
 import { useState, useEffect } from "react";
 import Movie from "../../../models/Movie";
-import { getTmdbPopularMovies } from "../../../services/tmdbService";
-import MovieCard from "./MovieCard";
 import MovieModal from "../../MovieModal/MovieModal";
+import { getPopularMovies } from "../../../services/movieService";
+import MovieCard from "./MovieCard";
 
 const MovieCardContainer = () => {
   // hooks
@@ -12,9 +12,7 @@ const MovieCardContainer = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
-    getTmdbPopularMovies().then((response) =>
-      setPopularMovies(response.results)
-    );
+    getPopularMovies().then((response) => setPopularMovies(response));
   }, []);
 
   const handleClick = (movie: Movie) => {
@@ -25,11 +23,7 @@ const MovieCardContainer = () => {
   return (
     <ul className="MovieCardContainer">
       {popularMovies.map((movie) => (
-        <MovieCard
-          key={movie.id}
-          movieId={movie.id}
-          handleClick={handleClick}
-        />
+        <MovieCard key={movie.id} movie={movie} handleClick={handleClick} />
       ))}
 
       {selectedMovie && (
