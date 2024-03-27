@@ -3,20 +3,28 @@
   box-shadow: none;
 }
 
-.MovieModalHeader .movie-modal-header-backdrop {
-  vertical-align: middle;
-  height: 13rem;
-  object-fit: cover;
-  -webkit-mask-image: linear-gradient(to top, transparent, black);
-  mask-image: linear-gradient(to top, transparent, black);
+.MovieModalHeader ion-toolbar {
+  --background: transparent;
+  --border-width: 0 !important;
 }
 
 .MovieModalHeader .movie-modal-close-button {
+  opacity: 0.7;
+}
+
+.MovieModalHeader .movie-modal-backdrop-info-container {
+  top: 0;
   position: absolute;
-  right: 0;
-  margin: 0.5rem;
-  opacity: 0.8;
-  z-index: 100;
+  width: 100%;
+}
+
+.MovieModalHeader .movie-modal-header-backdrop {
+  vertical-align: middle;
+  width: 100%;
+  height: 16rem;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(to top, transparent, black);
+  mask-image: linear-gradient(to top, transparent, black);
 }
 
 .MovieModalHeader .movie-modal-title-button-container {
@@ -32,4 +40,5 @@
 .MovieModalHeader .movie-modal-title {
   flex: 1;
   font-size: 1.3rem;
+  color: black;
 }
