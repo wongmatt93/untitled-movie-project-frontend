@@ -1,10 +1,14 @@
+.MovieCard:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
 .MovieCard .movie-ion-card {
-  margin: 5px;
+  margin: 0;
   width: fit-content;
 }
 
 .MovieCard .movie-poster {
-  width: 6.5rem;
+  min-width: 6.5rem;
   height: 10rem;
   cursor: pointer;
   object-fit: cover;
