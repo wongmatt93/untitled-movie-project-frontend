@@ -30,7 +30,7 @@ const ProfileMovieListItem = ({ movie }: Props) => {
           <div className="profile-movie-details">
             <h3 className="profile-movie-title">{title}</h3>
             <ul className="profile-movie-genre-list">
-              {genres.map((genre, index) => (
+              {genres?.map((genre, index) => (
                 <li key={genre.id}>
                   <p>
                     {genre.name}
@@ -44,7 +44,7 @@ const ProfileMovieListItem = ({ movie }: Props) => {
         </div>
         {movie.rating && (
           <div className="profile-movie-rating-container">
-            <p className="profile-movie-rating">{movie.rating}</p>
+            <p className="profile-movie-rating">{movie.ranking}</p>
           </div>
         )}
       </div>

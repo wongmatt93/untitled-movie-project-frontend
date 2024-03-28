@@ -37,7 +37,8 @@ export const addWatchedMovieToUserProfile = async (
   uid: string,
   id: number,
   preference: string,
-  ranking: number
+  ranking: number,
+  match: boolean
 ): Promise<UserProfile> =>
   (
     await axios.put(`${baseURL}/userProfiles/add-watched-movie`, {
@@ -45,6 +46,7 @@ export const addWatchedMovieToUserProfile = async (
       id,
       preference,
       ranking,
+      match,
     })
   ).data;
 

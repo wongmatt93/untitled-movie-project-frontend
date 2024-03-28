@@ -8,10 +8,10 @@ import {
 import { closeOutline } from "ionicons/icons";
 import Movie from "../../../models/Movie";
 import UserProfile from "../../../models/UserProfile";
-import AddRemoveMovieButton from "../../MovieButtons/AddRemoveMovieButton";
 import { useContext } from "react";
 import MovieModalContext from "../../../context/MovieModalContext";
 import "./MovieModalHeader.css";
+import MovieButtonContainer from "../../MovieButtons/MovieButtonContainer";
 
 interface Props {
   movie: Movie;
@@ -23,7 +23,7 @@ const MovieModalHeader = ({ movie, userProfile }: Props) => {
   const { setIsOpen } = useContext(MovieModalContext);
 
   // variables
-  const { id, title, backdrop_path } = movie;
+  const { title, backdrop_path } = movie;
 
   return (
     <IonHeader className="MovieModalHeader">
@@ -49,18 +49,7 @@ const MovieModalHeader = ({ movie, userProfile }: Props) => {
         <div className="movie-modal-title-button-container">
           <h2 className="movie-modal-title">{title}</h2>
           {userProfile && (
-            <div>
-              <AddRemoveMovieButton
-                type="watched"
-                userProfile={userProfile}
-                movieId={id}
-              />
-              <AddRemoveMovieButton
-                type="watchlist"
-                userProfile={userProfile}
-                movieId={id}
-              />
-            </div>
+            <MovieButtonContainer movie={movie} userProfile={userProfile} />
           )}
         </div>
       </section>

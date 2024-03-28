@@ -1,0 +1,8 @@
+.MovieButtonContainer {
+  display: flex;
+}
+
+.MovieButtonContainer .movie-button-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
