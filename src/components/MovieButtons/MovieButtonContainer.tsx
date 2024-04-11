@@ -24,14 +24,14 @@ interface Props {
 
 const MovieButtonContainer = ({ userProfile, movie }: Props) => {
   // hooks
-  const { setUserProfile } = useContext(AuthContext);
+  const { refreshProfile, combinedWatchedMovies } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // variables
   const { uid, watchedMovies, watchlistMovies } = userProfile;
   const { id } = movie;
 
-  const inWatched: boolean = watchedMovies.some(
+  const inWatched: boolean = combinedWatchedMovies.some(
     (watchedMovie) => watchedMovie.id === id
   );
 
@@ -41,13 +41,13 @@ const MovieButtonContainer = ({ userProfile, movie }: Props) => {
 
   // functions
   const handleRemoveFromWatched = async (): Promise<void> =>
-    setUserProfile(await removeWatchedMovieFromUserProfile(uid, id));
+    refreshProfile(await removeWatchedMovieFromUserProfile(uid, id));
 
   const handleAddToWatchlist = async (): Promise<void> =>
-    setUserProfile(await addWatchlistMovieToUserProfile(uid, id));
+    refreshProfile(await addWatchlistMovieToUserProfile(uid, id));
 
   const handleRemoveFromWatchlist = async (): Promise<void> =>
-    setUserProfile(await removeWatchlistMovieFromUserProfile(uid, id));
+    refreshProfile(await removeWatchlistMovieFromUserProfile(uid, id));
 
   return (
     <div className="MovieButtonContainer">
@@ -92,9 +92,8 @@ const MovieButtonContainer = ({ userProfile, movie }: Props) => {
       <RankMovieModal
         isOpen={isOpen}
         movie={movie}
-        uid={uid}
-        watchedMovies={watchedMovies}
-        setUserProfile={setUserProfile}
+        userProfile={userProfile}
+        refreshProfile={refreshProfile}
         setIsOpen={setIsOpen}
       />
     </div>

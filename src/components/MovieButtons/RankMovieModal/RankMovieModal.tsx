@@ -15,41 +15,28 @@ import "./RankMovieModal.css";
 interface Props {
   isOpen: boolean;
   movie: Movie;
-  uid: string;
-  watchedMovies: SavedMovie[];
-  setUserProfile: React.Dispatch<React.SetStateAction<UserProfile | null>>;
+  userProfile: UserProfile;
+  refreshProfile: (userProfile: UserProfile) => void;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RankMovieModal = ({
   isOpen,
-  uid,
   movie,
-  watchedMovies,
-  setUserProfile,
+  userProfile,
+  refreshProfile,
   setIsOpen,
 }: Props) => {
-  // logic
-  const checkRankings: { [key: number]: boolean } = {};
-
-  // Filter watchedMovies array to remove elements with duplicate rankings
-  // This is helpful so it doesn't compare to movies with same ranking
-  const watchedMoviesSingleRating = watchedMovies.filter((movie) => {
-    if (!checkRankings[movie.ranking!]) {
-      checkRankings[movie.ranking!] = true;
-      return true;
-    }
-    // If the ranking is seen before, filter out the movie
-    return false;
-  });
-
   // variables
   const { id, title } = movie;
-  const watchedLength: number = watchedMoviesSingleRating.length;
 
   // hooks
+  const [preference, setPreference] = useState<string>("");
+  const [comparisonMovieArray, setComparisonMovieArray] = useState<
+    SavedMovie[]
+  >([]);
   const [left, setLeft] = useState<number>(0);
-  const [right, setRight] = useState<number>(watchedLength - 1);
+  const [right, setRight] = useState<number>(0);
   const [mid, setMid] = useState<number>(Math.floor((left + right) / 2));
   const [currentComparison, setCurrentComparison] = useState<SavedMovie | null>(
     null
@@ -57,20 +44,53 @@ const RankMovieModal = ({
 
   useEffect(() => {
     setMid(Math.floor((left + right) / 2));
-    if (watchedLength > 0 && left <= right) {
-      setCurrentComparison(watchedMoviesSingleRating[mid]);
+    if (comparisonMovieArray.length > 0 && left <= right) {
+      setCurrentComparison(comparisonMovieArray[mid]);
     }
-  }, [left, right, watchedMoviesSingleRating, mid]);
+  }, [left, right, comparisonMovieArray, mid]);
 
   // functions
   const addWatchedMovie = async (
     rank: number,
     match: boolean
   ): Promise<void> => {
-    setUserProfile(
-      await addWatchedMovieToUserProfile(uid, id, "liked", rank, match)
+    refreshProfile(
+      await addWatchedMovieToUserProfile(
+        userProfile.uid,
+        id,
+        preference,
+        rank,
+        match
+      )
     );
     setIsOpen(false);
+  };
+
+  const handlePreference = (preference: string) => {
+    const { positive, neutral, negative } = userProfile.watchedMovies;
+    const checkRankings: { [key: number]: boolean } = {};
+    const selectedMoviePreferenceArray: SavedMovie[] =
+      preference === "positive"
+        ? positive
+        : preference === "neutral"
+        ? neutral
+        : negative;
+
+    // Filter watchedMovies array to remove elements with duplicate rankings
+    // This is helpful so it doesn't compare to movies with same ranking
+    const watchedMoviesSingleRating = selectedMoviePreferenceArray.filter(
+      (movie) => {
+        if (!checkRankings[movie.ranking!]) {
+          checkRankings[movie.ranking!] = true;
+          return true;
+        }
+        // If the ranking is seen before, filter out the movie
+        return false;
+      }
+    );
+
+    setPreference(preference);
+    setComparisonMovieArray(watchedMoviesSingleRating);
   };
 
   const handleComparison = (movieId: number) => {
@@ -104,25 +124,47 @@ const RankMovieModal = ({
           </IonButtons>
         </IonToolbar>
 
-        {watchedLength === 0 && (
-          <IonButton onClick={() => addWatchedMovie(1, false)}>
-            Add Movie
+        <div>
+          <IonButton onClick={() => handlePreference("positive")}>
+            Positive
           </IonButton>
-        )}
+          <IonButton onClick={() => handlePreference("neutral")}>
+            Neutral
+          </IonButton>
+          <IonButton onClick={() => handlePreference("negative")}>
+            Negative
+          </IonButton>
+        </div>
 
-        {currentComparison && (
+        {preference && (
           <div>
-            <IonButton onClick={() => handleComparison(id)}>{title}</IonButton>
+            {comparisonMovieArray.length === 0 && (
+              <IonButton onClick={() => addWatchedMovie(1, false)}>
+                Add Movie
+              </IonButton>
+            )}
 
-            <IonButton onClick={() => handleComparison(currentComparison.id)}>
-              {currentComparison.movie.title}
-            </IonButton>
+            {currentComparison && (
+              <div>
+                <IonButton onClick={() => handleComparison(id)}>
+                  {title}
+                </IonButton>
 
-            <IonButton
-              onClick={() => addWatchedMovie(currentComparison.ranking!, true)}
-            >
-              Same
-            </IonButton>
+                <IonButton
+                  onClick={() => handleComparison(currentComparison.id)}
+                >
+                  {currentComparison.movie.title}
+                </IonButton>
+
+                <IonButton
+                  onClick={() =>
+                    addWatchedMovie(currentComparison.ranking!, true)
+                  }
+                >
+                  Same
+                </IonButton>
+              </div>
+            )}
           </div>
         )}
       </IonContent>
