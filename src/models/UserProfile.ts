@@ -1,5 +1,11 @@
 import Movie from "./Movie";
 
+interface WatchedMovies {
+  positive: SavedMovie[];
+  neutral: SavedMovie[];
+  negative: SavedMovie[];
+}
+
 export interface SavedMovie {
   id: number;
   movie: Movie;
@@ -14,6 +20,6 @@ export default interface UserProfile {
   username: string;
   displayName: string;
   photoURL: string;
-  watchedMovies: SavedMovie[];
+  watchedMovies: WatchedMovies;
   watchlistMovies: SavedMovie[];
 }

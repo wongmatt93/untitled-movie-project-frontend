@@ -1,14 +1,16 @@
 import { createContext } from "react";
-import UserProfile from "../models/UserProfile";
+import UserProfile, { SavedMovie } from "../models/UserProfile";
 
 export interface AuthContextModel {
   userProfile: UserProfile | null;
-  setUserProfile: React.Dispatch<React.SetStateAction<UserProfile | null>>;
+  combinedWatchedMovies: SavedMovie[];
+  refreshProfile: (userProfile: UserProfile) => void;
 }
 
 const defaultValue: AuthContextModel = {
   userProfile: null,
-  setUserProfile: () => {},
+  combinedWatchedMovies: [],
+  refreshProfile: () => {},
 };
 
 const AuthContext = createContext(defaultValue);

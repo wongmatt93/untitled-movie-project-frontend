@@ -18,7 +18,7 @@ interface Props {
 }
 
 const Profile = ({ thisProfile }: Props) => {
-  const { userProfile } = useContext(AuthContext);
+  const { userProfile, combinedWatchedMovies } = useContext(AuthContext);
   const [displayList, setDisplayList] = useState<string>("watched");
   const isUsersProfile: boolean = thisProfile.uid === userProfile?.uid;
 
@@ -50,7 +50,7 @@ const Profile = ({ thisProfile }: Props) => {
         </IonSegment>
 
         {displayList === "watched" && (
-          <ProfileMovieList movies={thisProfile.watchedMovies} />
+          <ProfileMovieList movies={combinedWatchedMovies} />
         )}
 
         {displayList === "watchlist" && (

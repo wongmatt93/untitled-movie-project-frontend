@@ -6,9 +6,19 @@ import {
   getUserProfileByUid,
 } from "../services/userProfileService";
 import AuthContext from "./AuthContext";
+import { SavedMovie } from "../models/UserProfile";
 
 function AuthContextProvider({ children }: { children: ReactNode }) {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [combinedWatchedMovies, setCombinedWatchedMovies] = useState<
+    SavedMovie[]
+  >([]);
+
+  const refreshProfile = (userProfile: UserProfile): void => {
+    const { positive, neutral, negative } = userProfile.watchedMovies;
+    setUserProfile(userProfile);
+    setCombinedWatchedMovies([...positive, ...neutral, ...negative]);
+  };
 
   useEffect(() => {
     // useEffect to only register once at start
@@ -16,7 +26,7 @@ function AuthContextProvider({ children }: { children: ReactNode }) {
       if (user) {
         getUserProfileByUid(user.uid).then((userProfile) => {
           if (userProfile) {
-            setUserProfile(userProfile);
+            refreshProfile(userProfile);
           } else {
             addNewUserProfile(user.uid).then((response) =>
               setUserProfile(response)
@@ -28,7 +38,9 @@ function AuthContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ userProfile, setUserProfile }}>
+    <AuthContext.Provider
+      value={{ userProfile, combinedWatchedMovies, refreshProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );
